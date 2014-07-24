@@ -5,7 +5,6 @@ from smtplib import SMTP
 import alerters
 import settings
 
-
 """
 Create any alerter you want here. The function will be invoked from trigger_alert.
 Two arguments will be passed, both of them tuples: alert and metric.
@@ -62,6 +61,18 @@ def alert_hipchat(alert, metric):
     for room in rooms:
         hipster.method('rooms/message', method='POST', parameters={'room_id': room, 'from': 'Skyline', 'color': settings.HIPCHAT_OPTS['color'], 'message': 'Anomaly: <a href="%s">%s</a> : %s' % (link, metric[1], metric[0])})
 
+def alert_slack(alert, metric):
+    """
+
+    :param alert:
+    :param metric:
+    """
+    import requests
+    import json
+    link = settings.GRAPH_URL % (metric[1])
+    body = 'Anomalous value: %s \n Next alert in: %s seconds <%s|%s>' % (metric[0], alert[2], link, link)
+    payload = {"username": "skyline", "text": body, "icon_emoji": ":convenience_store:"}
+    requests.post(settings.SLACK_OPTS['webhook_url'], data=json.dumps(payload))
 
 def trigger_alert(alert, metric):
 

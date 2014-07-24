@@ -158,6 +158,9 @@ PAGERDUTY_OPTS = {
     "key": "your_pagerduty_service_api_key",
 }
 
+SLACK_OPTS = {
+    "webhook_url": "https://example.slack.com/services/hooks/incoming-webhook?token=slack_token",
+}
 
 """
 Horizon settings
